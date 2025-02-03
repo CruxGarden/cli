@@ -1,0 +1,2 @@
+# sli
+StoryLink CLI
