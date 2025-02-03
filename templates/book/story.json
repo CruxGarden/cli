@@ -1,0 +1,13 @@
+{
+  "title": "Book Title",
+  "author": "Author Name",
+  "version": "1.0.0",
+  "start": "prologue/index.md",
+  "created": "",
+  "updated": "",
+  "metadata": {
+    "genre": "Interactive Fiction",
+    "theme": "Adventure",
+    "reading-level": "Young Adult"
+  }
+}
