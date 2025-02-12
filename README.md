@@ -1,4 +1,4 @@
-# StoryLink
+# Storylink CLI
 
 A modern toolkit for creating interactive stories using Markdown.
 
@@ -117,9 +117,9 @@ The `story.json` file configures your story:
 }
 ```
 
-# Creating Your First StoryLink Story
+# Creating Your First Storylink Story
 
-This tutorial will walk you through creating an interactive story using StoryLink. We'll create a simple mystery story about exploring an old house.
+This tutorial will walk you through creating an interactive story using Storylink. We'll create a simple mystery story about exploring an old house.
 
 ## Prerequisites
 
@@ -129,7 +129,7 @@ This tutorial will walk you through creating an interactive story using StoryLin
 
 ## Step 1: Installation
 
-First, let's install StoryLink's CLI tool globally:
+First, let's install Storylink's CLI tool globally:
 
 ```bash
 npm install -g @storylink/cli
@@ -389,7 +389,7 @@ You find an old key.
 - Check [GitHub](https://github.com/StoryLinkTools/sli) for issues
 - Join our community for support
 
-Now you're ready to create your own interactive stories with StoryLink!
+Now you're ready to create your own interactive stories with Storylink!
 
 
 ## Best Practices
@@ -431,5 +431,5 @@ MIT - see [LICENSE](LICENSE) for details.
 ## Links
 
 - [Documentation](https://storylink.dev)
-- [GitHub](https://github.com/StoryLinkTools/sli)
+- [GitHub](https://github.com/StorylinkTools/sli)
 - [npm](https://www.npmjs.com/package/@storylink/cli)
