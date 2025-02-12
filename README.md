@@ -1,6 +1,6 @@
 # Storylink CLI
 
-A modern toolkit for creating interactive stories using Markdown.
+Storylink CLI - A modern, flexible toolkit for interactive storytelling. Write your story in plain [Markdown](https://en.wikipedia.org/wiki/Markdown) files and export it to many popular formats, including HTML (static and single-page), ePub, MOBI, PDF (links and print), and mobile apps using [Expo](https://expo.dev/).
 
 ## Quick Start
 
