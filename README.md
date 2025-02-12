@@ -26,18 +26,18 @@ Stories are written in Markdown with a simple directory structure:
 ```
 my-story/
 ├── story.json          # Story metadata
-└── scenes/             # Story content
+└── links/              # Story content
     ├── opening/
-    │   ├── index.md    # Starting scene
-    │   └── examine.md  # Another scene
+    │   ├── index.md    # Starting link
+    │   └── examine.md  # Another link
     └── chapter-1/
         ├── index.md    # Chapter opening
-        └── scene-1.md  # Chapter scene
+        └── scene-1.md  # Chapter link
 ```
 
-### Scene Format
+### Link Format
 
-Scenes are Markdown files with choices as links:
+Links are Markdown files with choices as other links:
 
 ```markdown
 # The Cave Entrance
@@ -57,8 +57,8 @@ A cool breeze emerges from the dark cave mouth. Ancient symbols are carved above
 # New story project
 sli new story-name
 
-# New scene
-sli scene "cave/entrance"
+# New link
+sli link "cave/entrance"
 ```
 
 ### Development
@@ -156,7 +156,7 @@ This creates a basic project structure:
 ```
 haunted-house/
 ├── story.json
-└── scenes/
+└── links/
     └── opening/
         └── index.md
 ```
@@ -174,9 +174,9 @@ Open `story.json` and update it:
 }
 ```
 
-## Step 4: Writing Your First Scene
+## Step 4: Writing Your First Link
 
-Let's edit the opening scene. Open `scenes/opening/index.md`:
+Let's edit the opening link. Open `links/opening/index.md`:
 
 ```markdown
 # The Old House
@@ -188,20 +188,20 @@ You stand before an ancient Victorian house, its windows dark and shutters hangi
 - [Leave immediately](ending/leave.md)
 ```
 
-## Step 5: Creating More Scenes
+## Step 5: Creating More Links
 
-Create the scenes we linked to:
+Create the links:
 
 ```bash
-# Create entrance scenes
-sli scene entrance/front-door
-sli scene entrance/back-yard
-sli scene ending/leave
+# Create entrance links
+sli link entrance/front-door
+sli link entrance/back-yard
+sli link ending/leave
 ```
 
-Now edit each scene:
+Now edit each link:
 
-`scenes/entrance/front-door.md`:
+`links/entrance/front-door.md`:
 ```markdown
 # The Front Door
 
@@ -211,7 +211,7 @@ The heavy wooden door creaks as you turn the brass handle. Surprisingly, it's un
 - [Knock first](knock.md)
 ```
 
-`scenes/entrance/back-yard.md`:
+`links/entrance/back-yard.md`:
 ```markdown
 # The Back Yard
 
@@ -221,7 +221,7 @@ Overgrown grass reaches your knees. Through the vegetation, you spot a cellar do
 - [Go back to the front](../opening/index.md)
 ```
 
-`scenes/ending/leave.md`:
+`links/ending/leave.md`:
 ```markdown
 # A Wise Choice?
 
@@ -245,13 +245,13 @@ Visit `http://localhost:3000` in your browser. You can now:
 
 ## Step 7: Adding More Content
 
-Let's add the foyer scene:
+Let's add the foyer link:
 
 ```bash
-sli scene foyer/index
+sli link foyer/index
 ```
 
-Edit `scenes/foyer/index.md`:
+Edit `links/foyer/index.md`:
 ```markdown
 # The Grand Foyer
 
@@ -287,10 +287,10 @@ Your story will be available in the `dist` directory.
 
 ## Tips for Writing
 
-1. **Scene Organization**
-   - Group related scenes in directories
+1. **Link Organization**
+   - Group related links in directories
    - Use descriptive filenames
-   - Keep scenes focused
+   - Keep links focused
 
 2. **Writing Style**
    - Write clear descriptions
@@ -308,7 +308,7 @@ Your story will be available in the `dist` directory.
 
 Here's how a complete story structure might look:
 ```
-scenes/
+links/
 ├── opening/
 │   └── index.md
 ├── entrance/
@@ -357,7 +357,7 @@ scenes/
 
 1. **Chapter Organization**
 ```
-scenes/
+links/
 └── chapter-1/
     ├── index.md      # Chapter intro
     ├── scene-1.md    # First scene
@@ -366,7 +366,7 @@ scenes/
 
 2. **Branching Paths**
 ```
-scenes/
+links/
 └── choice/
     ├── path-a/
     │   └── index.md
@@ -386,7 +386,7 @@ You find an old key.
 ## Getting Help
 
 - Visit [storylink.dev](https://storylink.dev) for documentation
-- Check [GitHub](https://github.com/StoryLinkTools/sli) for issues
+- Check [GitHub](https://github.com/StorylinkTools/cli) for issues
 - Join our community for support
 
 Now you're ready to create your own interactive stories with Storylink!
@@ -394,11 +394,11 @@ Now you're ready to create your own interactive stories with Storylink!
 
 ## Best Practices
 
-1. **Scene Organization**
-   - Group related scenes in directories
+1. **Link Organization**
+   - Group related links in directories
    - Use descriptive names
-   - Keep scenes focused
-   - Make each scene stand alone
+   - Keep links focused
+   - Make each link stand alone
 
 2. **Writing**
    - Clear descriptions
@@ -431,5 +431,5 @@ MIT - see [LICENSE](LICENSE) for details.
 ## Links
 
 - [Documentation](https://storylink.dev)
-- [GitHub](https://github.com/StorylinkTools/sli)
+- [GitHub](https://github.com/StorylinkTools/cli)
 - [npm](https://www.npmjs.com/package/@storylink/cli)
