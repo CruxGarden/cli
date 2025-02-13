@@ -1,6 +1,6 @@
 # Storylink CLI
 
-Storylink CLI - A modern, flexible toolkit for interactive storytelling. Write your story in plain [Markdown](https://en.wikipedia.org/wiki/Markdown) files and export it to many popular formats, including HTML (static and single-page), ePub, MOBI, PDF (links and print), and mobile apps using [Expo](https://expo.dev/).
+Storylink CLI - A modern, flexible toolkit for interactive storytelling. Write your story in plain [Markdown](https://en.wikipedia.org/wiki/Markdown) files and export to many popular formats, including HTML (static and single-page), ePub, MOBI, PDF (links), and mobile apps using [Expo](https://expo.dev/).
 
 ## Quick Start
 
@@ -84,12 +84,14 @@ sli build --format html-single
 ## Build Formats
 
 ### HTML Static
+
 - Creates directory structure
 - Multiple HTML files
 - Real URLs
 - Easy to host
 
 ### HTML Single
+
 - Everything in one file
 - Easy to share
 - Works offline
@@ -98,6 +100,7 @@ sli build --format html-single
 ## Development Server
 
 The `sli dev` command provides:
+
 - Live preview
 - Auto-reload
 - Story validation
@@ -117,15 +120,15 @@ The `story.json` file configures your story:
 }
 ```
 
-# Creating Your First Storylink Story
+# Creating Your First Story
 
-This tutorial will walk you through creating an interactive story using Storylink. We'll create a simple mystery story about exploring an old house.
+This tutorial will walk you through creating an interactive story using Storylink. We'll create a creepy story about exploring a haunted house.
 
 ## Prerequisites
 
-- Node.js installed (v14 or higher)
+- Node.js installed (v22 or higher)
 - Basic knowledge of Markdown
-- A text editor (VS Code recommended)
+- A text editor (Obsidian recommended)
 
 ## Step 1: Installation
 
@@ -136,6 +139,7 @@ npm install -g @storylink/cli
 ```
 
 Verify the installation:
+
 ```bash
 sli --version
 ```
@@ -153,6 +157,7 @@ cd haunted-house
 ```
 
 This creates a basic project structure:
+
 ```
 haunted-house/
 ├── story.json
@@ -202,6 +207,7 @@ sli link ending/leave
 Now edit each link:
 
 `links/entrance/front-door.md`:
+
 ```markdown
 # The Front Door
 
@@ -212,6 +218,7 @@ The heavy wooden door creaks as you turn the brass handle. Surprisingly, it's un
 ```
 
 `links/entrance/back-yard.md`:
+
 ```markdown
 # The Back Yard
 
@@ -222,6 +229,7 @@ Overgrown grass reaches your knees. Through the vegetation, you spot a cellar do
 ```
 
 `links/ending/leave.md`:
+
 ```markdown
 # A Wise Choice?
 
@@ -234,11 +242,13 @@ You decide this adventure isn't worth the risk. As you turn to leave, you hear w
 ## Step 6: Testing Your Story
 
 Start the development server:
+
 ```bash
 sli dev
 ```
 
 Visit `http://localhost:3000` in your browser. You can now:
+
 - Navigate through your story
 - See path tracking
 - Test all links
@@ -252,6 +262,7 @@ sli link foyer/index
 ```
 
 Edit `links/foyer/index.md`:
+
 ```markdown
 # The Grand Foyer
 
@@ -266,6 +277,7 @@ Moonlight streams through dusty windows, illuminating a grand staircase. A doorw
 ## Step 8: Validating Your Story
 
 Check for any broken links or issues:
+
 ```bash
 sli check
 ```
@@ -275,6 +287,7 @@ Fix any problems that are found.
 ## Step 9: Building for Distribution
 
 Build your story:
+
 ```bash
 # Create a static website version
 sli build
@@ -288,11 +301,13 @@ Your story will be available in the `dist` directory.
 ## Tips for Writing
 
 1. **Link Organization**
+
    - Group related links in directories
    - Use descriptive filenames
    - Keep links focused
 
 2. **Writing Style**
+
    - Write clear descriptions
    - Give meaningful choices
    - Keep paragraphs short
@@ -307,6 +322,7 @@ Your story will be available in the `dist` directory.
 ## Story Structure Example
 
 Here's how a complete story structure might look:
+
 ```
 links/
 ├── opening/
@@ -336,12 +352,14 @@ links/
 ## Next Steps
 
 1. **Expand Your Story**
+
    - Add more rooms
    - Create multiple endings
    - Include hidden paths
    - Add story items
 
 2. **Polish Your Work**
+
    - Test all paths
    - Add descriptions
    - Balance choices
@@ -356,6 +374,7 @@ links/
 ## Common Patterns
 
 1. **Chapter Organization**
+
 ```
 links/
 └── chapter-1/
@@ -365,6 +384,7 @@ links/
 ```
 
 2. **Branching Paths**
+
 ```
 links/
 └── choice/
@@ -375,8 +395,10 @@ links/
 ```
 
 3. **Item Collection**
+
 ```markdown
 # Library
+
 You find an old key.
 
 - [Take the key](take-key.md)
@@ -391,16 +413,17 @@ You find an old key.
 
 Now you're ready to create your own interactive stories with Storylink!
 
-
 ## Best Practices
 
 1. **Link Organization**
+
    - Group related links in directories
    - Use descriptive names
    - Keep links focused
    - Make each link stand alone
 
 2. **Writing**
+
    - Clear descriptions
    - Meaningful choices
    - Consistent style

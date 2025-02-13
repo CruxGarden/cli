@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import chalk from 'chalk';
-import { createStory, createScene, devServer, buildStory, checkStory } from '../lib/commands.js';
+import {
+  createStory,
+  createLink,
+  devServer,
+  buildStory,
+  validateStory,
+} from '../lib/commands.js';
 
 program
   .name('sli')
-  .description('StoryLink - Interactive Story Development Tool')
+  .description('Storylink CLI - Interactive Story Development Tool')
   .version('0.1.0');
 
 program
@@ -16,11 +21,11 @@ program
   .action(createStory);
 
 program
-  .command('scene')
-  .description('Scene management')
-  .argument('<name>', 'Scene name')
-  .option('-p, --parent <parent>', 'Parent scene/sequence')
-  .action(createScene);
+  .command('link')
+  .description('Link management')
+  .argument('<name>', 'Link name')
+  .option('-p, --parent <parent>', 'Parent link/sequence')
+  .action(createLink);
 
 program
   .command('dev')
@@ -31,13 +36,17 @@ program
 program
   .command('build')
   .description('Build story for distribution')
-  .option('-f, --format <format>', 'Output format (html-single, html-static)', 'html-static')
+  .option(
+    '-f, --format <format>',
+    'Output format (html-single, html-static)',
+    'html-static',
+  )
   .option('-o, --out <directory>', 'Output directory', 'dist')
   .action(buildStory);
 
 program
   .command('check')
   .description('Validate story structure')
-  .action(checkStory);
+  .action(validateStory);
 
 program.parse();
