@@ -1,458 +1,218 @@
-# Storylink CLI
+# Crux Garden CLI
 
-Storylink CLI - A modern, flexible toolkit for interactive storytelling. Write your story in plain [Markdown](https://en.wikipedia.org/wiki/Markdown) files and export to many popular formats, including HTML (static and single-page), ePub, MOBI, PDF (links), and mobile apps using [Expo](https://expo.dev/).
+CLI tool to run the Crux Garden API locally with Docker.
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) installed and running
+- [Node.js](https://nodejs.org/) 18 or higher
+
+## Installation
+
+Install globally with npm:
+
+```bash
+npm install -g @cruxgarden/cli
+```
+
+Or use with npx (no installation required):
+
+```bash
+npx @cruxgarden/cli start
+```
 
 ## Quick Start
 
+Start the entire stack (PostgreSQL, Redis, and API):
+
 ```bash
-# Install globally
-npm install -g @storylink/cli
-
-# Create a new story
-sli new my-story
-cd my-story
-
-# Start development server
-sli dev
-
-# Build for distribution
-sli build
+crux start
 ```
 
-## Story Structure
+The API will be available at `http://localhost:3000`
 
-Stories are written in Markdown with a simple directory structure:
+View logs:
 
-```
-my-story/
-├── story.json          # Story metadata
-└── links/              # Story content
-    ├── opening/
-    │   ├── index.md    # Starting link
-    │   └── examine.md  # Another link
-    └── chapter-1/
-        ├── index.md    # Chapter opening
-        └── scene-1.md  # Chapter link
+```bash
+crux logs
 ```
 
-### Link Format
+Stop the stack:
 
-Links are Markdown files with choices as other links:
-
-```markdown
-# The Cave Entrance
-
-A cool breeze emerges from the dark cave mouth. Ancient symbols are carved above the entrance.
-
-- [Enter the cave](../cave/index.md)
-- [Examine the symbols](examine.md)
-- [Turn back](../forest/index.md)
+```bash
+crux stop
 ```
 
 ## Commands
 
-### Creating Content
+### `crux start`
+
+Start the Crux Garden API stack (PostgreSQL, Redis, and API).
 
 ```bash
-# New story project
-sli new story-name
-
-# New link
-sli link "cave/entrance"
+crux start
 ```
 
-### Development
+**Options:**
+- `--db-only` - Start only database services (PostgreSQL and Redis), without the API
+
+### `crux stop`
+
+Stop all running services.
 
 ```bash
-# Start dev server
-sli dev
-
-# Validate story
-sli check
+crux stop
 ```
 
-### Building
+### `crux restart`
+
+Restart all services.
 
 ```bash
-# Build static site (default)
-sli build
-
-# Build single HTML file
-sli build --format html-single
+crux restart
 ```
 
-## Build Formats
+### `crux status`
 
-### HTML Static
-
-- Creates directory structure
-- Multiple HTML files
-- Real URLs
-- Easy to host
-
-### HTML Single
-
-- Everything in one file
-- Easy to share
-- Works offline
-- Self-contained
-
-## Development Server
-
-The `sli dev` command provides:
-
-- Live preview
-- Auto-reload
-- Story validation
-- Link checking
-- Progress tracking
-
-## Story Configuration
-
-The `story.json` file configures your story:
-
-```json
-{
-  "title": "The Great Adventure",
-  "author": "Jane Smith",
-  "version": "1.0.0",
-  "start": "opening/index.md"
-}
-```
-
-# Creating Your First Story
-
-This tutorial will walk you through creating an interactive story using Storylink. We'll create a creepy story about exploring a haunted house.
-
-## Prerequisites
-
-- Node.js installed (v22 or higher)
-- Basic knowledge of Markdown
-- A text editor (Obsidian recommended)
-
-## Step 1: Installation
-
-First, let's install Storylink's CLI tool globally:
+Show the status of all services.
 
 ```bash
-npm install -g @storylink/cli
+crux status
 ```
 
-Verify the installation:
+### `crux logs`
+
+View API logs.
 
 ```bash
-sli --version
+crux logs
+
+# Follow logs (like tail -f)
+crux logs -f
 ```
 
-## Step 2: Creating a New Story
+### `crux clean`
 
-Let's create a new story project:
+Stop and remove all containers, volumes, and images. **Warning: This deletes all data!**
 
 ```bash
-# Create a new story
-sli new haunted-house
-
-# Move into the project directory
-cd haunted-house
+crux clean
 ```
 
-This creates a basic project structure:
+### `crux db:connect`
 
-```
-haunted-house/
-├── story.json
-└── links/
-    └── opening/
-        └── index.md
-```
-
-## Step 3: Configure Your Story
-
-Open `story.json` and update it:
-
-```json
-{
-  "title": "The Haunted House",
-  "author": "Your Name",
-  "version": "1.0.0",
-  "start": "opening/index.md"
-}
-```
-
-## Step 4: Writing Your First Link
-
-Let's edit the opening link. Open `links/opening/index.md`:
-
-```markdown
-# The Old House
-
-You stand before an ancient Victorian house, its windows dark and shutters hanging loose. The evening fog swirls around your feet as you consider your next move.
-
-- [Try the front door](entrance/front-door.md)
-- [Check around back](entrance/back-yard.md)
-- [Leave immediately](ending/leave.md)
-```
-
-## Step 5: Creating More Links
-
-Create the links:
+Connect to the PostgreSQL database with `psql`.
 
 ```bash
-# Create entrance links
-sli link entrance/front-door
-sli link entrance/back-yard
-sli link ending/leave
+crux db:connect
 ```
 
-Now edit each link:
+Useful psql commands:
+- `\dt` - List all tables
+- `\d table_name` - Describe a table
+- `\q` - Quit
 
-`links/entrance/front-door.md`:
+### `crux redis:connect`
 
-```markdown
-# The Front Door
-
-The heavy wooden door creaks as you turn the brass handle. Surprisingly, it's unlocked.
-
-- [Enter the house](../foyer/index.md)
-- [Knock first](knock.md)
-```
-
-`links/entrance/back-yard.md`:
-
-```markdown
-# The Back Yard
-
-Overgrown grass reaches your knees. Through the vegetation, you spot a cellar door.
-
-- [Try the cellar door](../basement/index.md)
-- [Go back to the front](../opening/index.md)
-```
-
-`links/ending/leave.md`:
-
-```markdown
-# A Wise Choice?
-
-You decide this adventure isn't worth the risk. As you turn to leave, you hear what sounds like a child's laughter from an upstairs window...
-
-- [Change your mind and go back](../opening/index.md)
-- [Keep walking] -> The End
-```
-
-## Step 6: Testing Your Story
-
-Start the development server:
+Connect to Redis with `redis-cli`.
 
 ```bash
-sli dev
+crux redis:connect
 ```
 
-Visit `http://localhost:3000` in your browser. You can now:
+## Environment Variables
 
-- Navigate through your story
-- See path tracking
-- Test all links
-
-## Step 7: Adding More Content
-
-Let's add the foyer link:
+The CLI uses sensible defaults, but you can customize behavior by creating a `.env` file in your working directory:
 
 ```bash
-sli link foyer/index
+# Database
+DATABASE_URL=postgresql://cruxgarden:cruxgarden_dev_password@postgres:5432/cruxgarden
+REDIS_URL=redis://redis:6379
+
+# JWT
+JWT_SECRET=your-super-secret-jwt-key-min-32-chars-for-development-only
+
+# AWS (for email)
+AWS_ACCESS_KEY_ID=your-key
+AWS_SECRET_ACCESS_KEY=your-secret
+AWS_REGION=us-east-1
+FROM_EMAIL_ADDRESS=noreply@example.com
+
+# CORS
+CORS_ORIGIN=*
+
+# Logging
+LOG_LEVEL=info
 ```
 
-Edit `links/foyer/index.md`:
+## Services
 
-```markdown
-# The Grand Foyer
+When you run `crux start`, the following services are started:
 
-Moonlight streams through dusty windows, illuminating a grand staircase. A doorway leads to what appears to be a library, and another to a dining room.
+- **API**: `http://localhost:3000` - Crux Garden API
+- **PostgreSQL**: `localhost:5432` - Database
+- **Redis**: `localhost:6379` - Cache
 
-- [Climb the stairs](../upstairs/index.md)
-- [Enter the library](../library/index.md)
-- [Check the dining room](../dining/index.md)
-- [Leave the house](../ending/leave.md)
-```
+## Development Workflow
 
-## Step 8: Validating Your Story
+1. Start the database services:
+   ```bash
+   crux start --db-only
+   ```
 
-Check for any broken links or issues:
+2. Run your own API instance locally (not in Docker) for development:
+   ```bash
+   cd /path/to/api
+   npm run start:dev
+   ```
+
+3. When done, stop the services:
+   ```bash
+   crux stop
+   ```
+
+## Troubleshooting
+
+### Port already in use
+
+If you get an error about ports being in use, stop any existing services:
 
 ```bash
-sli check
+# Check what's using port 3000
+lsof -i :3000
+
+# Stop the Crux Garden stack
+crux stop
+
+# Or clean everything
+crux clean
 ```
 
-Fix any problems that are found.
+### Containers won't start
 
-## Step 9: Building for Distribution
-
-Build your story:
+Try cleaning and restarting:
 
 ```bash
-# Create a static website version
-sli build
-
-# Or create a single HTML file
-sli build --format html-single
+crux clean
+crux start
 ```
 
-Your story will be available in the `dist` directory.
+### Database connection issues
 
-## Tips for Writing
+Make sure the database is healthy:
 
-1. **Link Organization**
-
-   - Group related links in directories
-   - Use descriptive filenames
-   - Keep links focused
-
-2. **Writing Style**
-
-   - Write clear descriptions
-   - Give meaningful choices
-   - Keep paragraphs short
-   - Use active voice
-
-3. **Story Structure**
-   - Plan major paths
-   - Create interesting choices
-   - Allow for different endings
-   - Consider path length
-
-## Story Structure Example
-
-Here's how a complete story structure might look:
-
-```
-links/
-├── opening/
-│   └── index.md
-├── entrance/
-│   ├── front-door.md
-│   ├── knock.md
-│   └── back-yard.md
-├── foyer/
-│   └── index.md
-├── library/
-│   ├── index.md
-│   ├── read-book.md
-│   └── secret-door.md
-├── dining/
-│   ├── index.md
-│   └── find-key.md
-├── basement/
-│   ├── index.md
-│   └── discovery.md
-└── ending/
-    ├── leave.md
-    ├── solve-mystery.md
-    └── trapped.md
+```bash
+crux status
 ```
 
-## Next Steps
-
-1. **Expand Your Story**
-
-   - Add more rooms
-   - Create multiple endings
-   - Include hidden paths
-   - Add story items
-
-2. **Polish Your Work**
-
-   - Test all paths
-   - Add descriptions
-   - Balance choices
-   - Check pacing
-
-3. **Share Your Story**
-   - Build final version
-   - Test in different browsers
-   - Share with friends
-   - Gather feedback
-
-## Common Patterns
-
-1. **Chapter Organization**
-
-```
-links/
-└── chapter-1/
-    ├── index.md      # Chapter intro
-    ├── scene-1.md    # First scene
-    └── scene-2.md    # Second scene
-```
-
-2. **Branching Paths**
-
-```
-links/
-└── choice/
-    ├── path-a/
-    │   └── index.md
-    └── path-b/
-        └── index.md
-```
-
-3. **Item Collection**
-
-```markdown
-# Library
-
-You find an old key.
-
-- [Take the key](take-key.md)
-- [Leave it](leave-key.md)
-```
-
-## Getting Help
-
-- Visit [storylink.dev](https://storylink.dev) for documentation
-- Check [GitHub](https://github.com/StorylinkTools/cli) for issues
-- Join our community for support
-
-Now you're ready to create your own interactive stories with Storylink!
-
-## Best Practices
-
-1. **Link Organization**
-
-   - Group related links in directories
-   - Use descriptive names
-   - Keep links focused
-   - Make each link stand alone
-
-2. **Writing**
-
-   - Clear descriptions
-   - Meaningful choices
-   - Consistent style
-   - Test all paths
-
-3. **Development**
-   - Regular validation
-   - Test navigation
-   - Check links
-   - Use version control
-
-## Future Features
-
-- EPUB export
-- PDF export
-- More templates
-- Story statistics
-- Path visualization
-
-## Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+You should see `Up (healthy)` for postgres.
 
 ## License
 
-MIT - see [LICENSE](LICENSE) for details.
+MIT
 
 ## Links
 
-- [Documentation](https://storylink.dev)
-- [GitHub](https://github.com/StorylinkTools/cli)
-- [npm](https://www.npmjs.com/package/@storylink/cli)
+- [API Repository](https://github.com/CruxGarden/api)
+- [Documentation](https://github.com/CruxGarden/api#readme)
+- [Issues](https://github.com/CruxGarden/cli/issues)

@@ -1,31 +1,22 @@
 {
-  "name": "@storylink/cli",
+  "name": "@cruxgarden/cli",
   "version": "0.1.0",
-  "description": "Interactive story development toolkit",
+  "description": "CLI tool to run Crux Garden API locally with Docker",
   "type": "module",
   "bin": {
-    "sli": "./bin/sli.js"
+    "crux": "./bin/crux.js"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "format": "prettier --write ."
   },
   "engines": {
-    "node": ">=14.16"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "chalk": "^5.3.0",
-    "chokidar": "^4.0.3",
     "commander": "^11.1.0",
-    "express": "^4.18.2",
-    "inquirer": "^9.2.12",
-    "marked": "^11.1.1",
-    "ora": "^7.0.1",
-    "remark-gfm": "^4.0.0",
-    "remark-html": "^16.0.1",
-    "remark-parse": "^11.0.0",
-    "unified": "^11.0.4",
-    "ws": "^8.14.2"
+    "ora": "^7.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
@@ -33,18 +24,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StoryLinkTools/sli.git"
+    "url": "git+https://github.com/CruxGarden/cli.git"
   },
   "keywords": [
-    "interactive-fiction",
-    "storytelling",
+    "crux",
+    "cruxgarden",
+    "api",
     "cli",
-    "markdown"
+    "docker",
+    "knowledge-management"
   ],
-  "author": "StoryLink",
+  "author": "The Keeper",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/StoryLinkTools/sli/issues"
+    "url": "https://github.com/CruxGarden/cli/issues"
   },
-  "homepage": "https://storylink.dev"
+  "homepage": "https://github.com/CruxGarden/cli#readme"
 }
