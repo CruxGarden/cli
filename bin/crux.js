@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 import { program } from "commander";
+import { readFileSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import {
   showBanner,
   startNursery,
@@ -17,10 +20,16 @@ import {
   stopNurseryDb,
 } from "../lib/commands.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const packageJson = JSON.parse(
+  readFileSync(join(__dirname, "..", "package.json"), "utf-8"),
+);
+
 program
   .name("crux")
-  .description("Crux Garden CLI - Nursery Environment Manager")
-  .version("0.1.0");
+  .description("Crux Garden CLI")
+  .version(packageJson.version);
 
 // Nursery environment commands
 const nursery = program
@@ -29,7 +38,7 @@ const nursery = program
 
 nursery
   .command("start")
-  .description("Start the Nursery environment (postgres, redis, api)")
+  .description("Start the Nursery environment (api, postgres, redis)")
   .option("--db-only", "Start only database services (postgres, redis)")
   .option("--no-banner", "Hide the startup banner")
   .action((options) => {
