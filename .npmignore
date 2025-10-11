@@ -1,0 +1,30 @@
+# Tests
+*.test.js
+__tests__/
+coverage/
+
+# Development files
+.git/
+.gitignore
+.prettierrc
+.prettierignore
+.editorconfig
+
+# Documentation (development-only)
+CLAUDE.md
+PUBLISH.md
+
+# Development scripts
+test-colors.js
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

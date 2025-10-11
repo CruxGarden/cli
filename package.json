@@ -1,7 +1,7 @@
 {
   "name": "@cruxgarden/cli",
   "version": "0.0.1",
-  "description": "CLI tool to run Crux Garden API locally with Docker",
+  "description": "Crux Garden CLI",
   "type": "module",
   "bin": {
     "crux": "./bin/crux.js"
