@@ -1,6 +1,6 @@
 {
   "name": "@cruxgarden/cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Crux Garden CLI",
   "type": "module",
   "bin": {
