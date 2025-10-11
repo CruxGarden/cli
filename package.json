@@ -1,6 +1,6 @@
 {
   "name": "@cruxgarden/cli",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "CLI tool to run Crux Garden API locally with Docker",
   "type": "module",
   "bin": {
@@ -8,7 +8,18 @@
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "docker:nursery": "cd docker && docker-compose -f docker-compose.nursery.yml up -d",
+    "docker:nursery:logs": "cd docker && docker-compose -f docker-compose.nursery.yml logs -f",
+    "docker:nursery:down": "cd docker && docker-compose -f docker-compose.nursery.yml down",
+    "docker:nursery:clean": "cd docker && docker-compose -f docker-compose.nursery.yml down -v",
+    "docker:nursery:pull": "cd docker && docker-compose -f docker-compose.nursery.yml pull",
+    "docker:nursery:reset": "cd docker && docker-compose -f docker-compose.nursery.yml down -v && docker-compose -f docker-compose.nursery.yml pull && docker-compose -f docker-compose.nursery.yml up -d",
+    "docker:nursery:db": "cd docker && docker-compose -f docker-compose.nursery.yml up -d postgres redis",
+    "docker:nursery:db:stop": "cd docker && docker-compose -f docker-compose.nursery.yml stop postgres redis",
+    "docker:nursery:redis:connect": "docker exec -it cruxgarden-redis-nursery redis-cli",
+    "docker:nursery:db:connect": "docker exec -it cruxgarden-postgres-nursery psql -U cruxgarden -d cruxgarden",
+    "docker:nursery:api:connect": "docker exec -it cruxgarden-api-nursery sh"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -16,6 +27,7 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
+    "figlet": "^1.9.3",
     "ora": "^7.0.1"
   },
   "devDependencies": {

@@ -1,61 +1,113 @@
 #!/usr/bin/env node
-import { program } from 'commander';
+import { program } from "commander";
 import {
-  startStack,
-  stopStack,
-  restartStack,
-  statusStack,
-  logsStack,
-  cleanStack,
-  connectDb,
-  connectRedis,
-} from '../lib/commands.js';
+  showBanner,
+  startNursery,
+  stopNursery,
+  restartNursery,
+  statusNursery,
+  logsNursery,
+  cleanNursery,
+  pullNursery,
+  resetNursery,
+  connectNurseryDb,
+  connectNurseryRedis,
+  connectNurseryApi,
+  stopNurseryDb,
+} from "../lib/commands.js";
 
 program
-  .name('crux')
-  .description('Crux Garden CLI - Local API Development Environment')
-  .version('0.1.0');
+  .name("crux")
+  .description("Crux Garden CLI - Nursery Environment Manager")
+  .version("0.1.0");
 
-program
-  .command('start')
-  .description('Start the Crux Garden API stack (postgres, redis, api)')
-  .option('--db-only', 'Start only database services (postgres, redis)')
-  .action(startStack);
+// Nursery environment commands
+const nursery = program
+  .command("nursery")
+  .description("Manage the Nursery environment (demo/trial environment)");
 
-program
-  .command('stop')
-  .description('Stop the Crux Garden API stack')
-  .action(stopStack);
+nursery
+  .command("start")
+  .description("Start the Nursery environment (postgres, redis, api)")
+  .option("--db-only", "Start only database services (postgres, redis)")
+  .option("--no-banner", "Hide the startup banner")
+  .action((options) => {
+    if (!options.noBanner) showBanner();
+    startNursery(options);
+  });
 
-program
-  .command('restart')
-  .description('Restart the Crux Garden API stack')
-  .action(restartStack);
+nursery
+  .command("stop")
+  .description("Stop the Nursery environment")
+  .action(stopNursery);
 
-program
-  .command('status')
-  .description('Show status of running services')
-  .action(statusStack);
+nursery
+  .command("restart")
+  .description("Restart the Nursery environment")
+  .action(restartNursery);
 
-program
-  .command('logs')
-  .description('Show logs from the API service')
-  .option('-f, --follow', 'Follow log output')
-  .action(logsStack);
+nursery
+  .command("status")
+  .description("Show status of Nursery services")
+  .action(statusNursery);
 
-program
-  .command('clean')
-  .description('Stop and remove all containers, volumes, and images')
-  .action(cleanStack);
+nursery
+  .command("logs")
+  .description("Show logs from Nursery services")
+  .option("-f, --follow", "Follow log output")
+  .action(logsNursery);
 
-program
-  .command('db:connect')
-  .description('Connect to the PostgreSQL database')
-  .action(connectDb);
+nursery
+  .command("clean")
+  .description("Stop and remove all Nursery containers and volumes")
+  .action(cleanNursery);
 
-program
-  .command('redis:connect')
-  .description('Connect to Redis')
-  .action(connectRedis);
+nursery
+  .command("pull")
+  .description("Pull the latest API image from ghcr.io")
+  .action(pullNursery);
+
+nursery
+  .command("reset")
+  .description("Complete fresh reset (stop, clean, pull latest image, restart)")
+  .action(resetNursery);
+
+// Nursery database commands
+const nurseryDb = nursery
+  .command("db")
+  .description("Manage Nursery database services");
+
+nurseryDb
+  .command("start")
+  .description("Start only Nursery database services (postgres, redis)")
+  .action(() => startNursery({ dbOnly: true }));
+
+nurseryDb
+  .command("stop")
+  .description("Stop Nursery database services")
+  .action(stopNurseryDb);
+
+nurseryDb
+  .command("connect")
+  .description("Connect to the Nursery PostgreSQL database")
+  .action(connectNurseryDb);
+
+// Nursery Redis commands
+const nurseryRedis = nursery
+  .command("redis")
+  .description("Manage Nursery Redis");
+
+nurseryRedis
+  .command("connect")
+  .description("Connect to Nursery Redis")
+  .action(connectNurseryRedis);
+
+// Nursery API commands
+const nurseryApi = nursery.command("api").description("Manage Nursery API");
+
+nurseryApi
+  .command("connect")
+  .description("Open a shell in the Nursery API container")
+  .action(connectNurseryApi);
 
 program.parse();
