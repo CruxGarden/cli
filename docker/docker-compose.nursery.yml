@@ -4,17 +4,19 @@
 # Perfect for: demos, trials, showcasing features, onboarding
 # Usage: npm run docker:nursery
 
+name: cruxgarden-nursery
+
 services:
   # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
-    container_name: cruxgarden-postgres-nursery
+    container_name: cruxgarden-nursery-postgres
     environment:
       POSTGRES_DB: cruxgarden
       POSTGRES_USER: cruxgarden
       POSTGRES_PASSWORD: cruxgarden_nursery_password
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - postgres_data_nursery:/var/lib/postgresql/data
     healthcheck:
@@ -26,10 +28,10 @@ services:
   # Redis Cache
   redis:
     image: redis:7-alpine
-    container_name: cruxgarden-redis-nursery
+    container_name: cruxgarden-nursery-redis
     command: redis-server --appendonly yes
     ports:
-      - "6380:6379"
+      - "6379:6379"
     volumes:
       - redis_data_nursery:/data
     healthcheck:
@@ -41,7 +43,7 @@ services:
   # Database Migrations (runs once before API starts)
   migrations:
     image: ghcr.io/cruxgarden/api:latest
-    container_name: cruxgarden-migrations-nursery
+    container_name: cruxgarden-nursery-migrations
     depends_on:
       postgres:
         condition: service_healthy
@@ -54,7 +56,7 @@ services:
   # Crux Garden API - Nursery Configuration
   api:
     image: ghcr.io/cruxgarden/api:latest
-    container_name: cruxgarden-api-nursery
+    container_name: cruxgarden-nursery-api
     restart: unless-stopped
     depends_on:
       migrations:
@@ -62,7 +64,7 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "${PORT:-3001}:3000"
+      - "${PORT:-3000}:3000"
     environment:
       # Application
       NODE_ENV: production

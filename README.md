@@ -62,7 +62,7 @@ Start the Nursery environment:
 crux nursery start
 ```
 
-The API will be available at `http://localhost:3001` with demo data loaded.
+The API will be available at `http://localhost:3000` with demo data loaded.
 
 View logs:
 
@@ -151,6 +151,20 @@ Stop and remove all Nursery containers and volumes. **Warning: This deletes all 
 crux nursery clean
 ```
 
+### `crux nursery purge`
+
+Stop and remove ALL Nursery resources including containers, volumes, AND images. **Warning: This deletes everything including downloaded images! You'll need to re-download images on next start.**
+
+```bash
+crux nursery purge
+```
+
+This is more aggressive than `clean` - it removes Docker images too, which means:
+
+- Frees up more disk space
+- Requires re-downloading images (~100-500MB) on next start
+- Useful when you want to completely remove all traces of the Nursery
+
 ### `crux nursery db start`
 
 Start only Nursery database services (PostgreSQL and Redis).
@@ -208,9 +222,9 @@ The Nursery is a production-like demo environment that:
 
 **Services:**
 
-- **API**: `http://localhost:3001` - Crux Garden API (published image with demo data)
-- **PostgreSQL**: `localhost:5433` - Database
-- **Redis**: `localhost:6380` - Cache
+- **API**: `http://localhost:3000` - Crux Garden API (published image with demo data)
+- **PostgreSQL**: `localhost:5432` - Database
+- **Redis**: `localhost:6379` - Cache
 
 ## Environment Variables
 
@@ -229,7 +243,7 @@ FROM_EMAIL_ADDRESS=demo@example.com
 # Optional overrides
 CORS_ORIGIN=*
 LOG_LEVEL=info
-PORT=3001
+PORT=3000
 ```
 
 ## Common Workflows
@@ -242,7 +256,7 @@ Use the Nursery environment for demos, trials, or showcasing features:
 # First time setup - pulls image and starts with demo data
 crux nursery start
 
-# View the demo at http://localhost:3001
+# View the demo at http://localhost:3000
 
 # Stop (keeps data for next demo)
 crux nursery stop
@@ -294,9 +308,9 @@ If you get an error about ports being in use, stop any existing services:
 
 ```bash
 # Check what's using the ports
-lsof -i :3001  # Nursery API
-lsof -i :5433  # Nursery PostgreSQL
-lsof -i :6380  # Nursery Redis
+lsof -i :3000  # Nursery API
+lsof -i :5432  # Nursery PostgreSQL
+lsof -i :6379  # Nursery Redis
 
 # Stop the Nursery
 crux nursery stop

@@ -96,7 +96,7 @@ All commands run Docker Compose from the `docker/` directory using `docker-compo
 
 **Port Mappings:**
 
-- Nursery: API:3001, PostgreSQL:5433, Redis:6380
+- Nursery: API:3000, PostgreSQL:5432, Redis:6379
 
 ### Nursery Environment
 
@@ -120,7 +120,8 @@ All commands are under the `crux nursery` namespace:
 - `crux nursery status` - Show service status
 - `crux nursery logs` - View logs
 - `crux nursery logs -f` - Follow logs
-- `crux nursery clean` - Remove containers/volumes
+- `crux nursery clean` - Remove containers/volumes (keeps images)
+- `crux nursery purge` - Remove containers/volumes/images (complete removal)
 - `crux nursery pull` - Pull latest image
 - `crux nursery reset` - Fresh start (clean + pull + start)
 - `crux nursery db start` - Start only postgres + redis
@@ -249,7 +250,7 @@ The CLI doesn't directly use environment variables - it passes them through to D
 - `FROM_EMAIL_ADDRESS` - Defaults to "noreply@example.com"
 - `CORS_ORIGIN` - Defaults to "\*"
 - `LOG_LEVEL` - Defaults to "info"
-- `PORT` - Defaults to 3001
+- `PORT` - Defaults to 3000
 
 See NURSERY_COMMANDS.md for complete environment variable reference.
 

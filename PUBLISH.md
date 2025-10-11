@@ -27,6 +27,7 @@ npm login
 ```
 
 This will prompt you for:
+
 - Username
 - Password
 - Email
@@ -59,13 +60,16 @@ npm pack --dry-run
 ```
 
 Review the output carefully. The package should include:
+
 - `bin/crux.js`
 - `lib/commands.js`
 - `docker/docker-compose.nursery.yml`
 - `package.json`
 - `README.md`
+- `LICENSE`
 
 It should **NOT** include:
+
 - `.git/`
 - `node_modules/`
 - Test files
@@ -137,6 +141,7 @@ npm version major
 ```
 
 The `npm version` command automatically:
+
 - Updates `package.json`
 - Creates a git commit
 - Creates a git tag
@@ -156,10 +161,12 @@ git push && git push --tags
 Follow [semver](https://semver.org/) principles:
 
 - **Patch (0.0.x)**: Bug fixes, documentation updates, minor tweaks
+
   - Example: Fix typo in error message, update README
   - `npm version patch`
 
 - **Minor (0.x.0)**: New features, backward compatible changes
+
   - Example: Add new command, new option to existing command
   - `npm version minor`
 
@@ -231,7 +238,7 @@ name: Publish to npm
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -239,8 +246,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "18"
+          registry-url: "https://registry.npmjs.org"
       - run: npm ci
       - run: npm test
       - run: npm publish --access public
@@ -255,6 +262,7 @@ But for now, manual publishing is fine and gives you full control.
 ### "You do not have permission to publish"
 
 Make sure you:
+
 1. Are logged in: `npm whoami`
 2. Have access to the `@cruxgarden` scope
 3. Used `--access public` for scoped packages
@@ -262,6 +270,7 @@ Make sure you:
 ### "Version already exists"
 
 You cannot republish the same version. Bump the version:
+
 ```bash
 npm version patch
 npm publish
@@ -270,6 +279,7 @@ npm publish
 ### "Package not found" after publishing
 
 Wait a few minutes - npm registry can take time to propagate. Then try:
+
 ```bash
 npm view @cruxgarden/cli
 ```
@@ -277,11 +287,13 @@ npm view @cruxgarden/cli
 ### Need to unpublish
 
 Within 24 hours, you can unpublish:
+
 ```bash
 npm unpublish @cruxgarden/cli@0.0.1
 ```
 
 After 24 hours, you cannot unpublish. Instead, deprecate:
+
 ```bash
 npm deprecate @cruxgarden/cli@0.0.1 "This version has a critical bug, please upgrade"
 ```

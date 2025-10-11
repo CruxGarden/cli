@@ -17,9 +17,9 @@
     "docker:nursery:reset": "cd docker && docker-compose -f docker-compose.nursery.yml down -v && docker-compose -f docker-compose.nursery.yml pull && docker-compose -f docker-compose.nursery.yml up -d",
     "docker:nursery:db": "cd docker && docker-compose -f docker-compose.nursery.yml up -d postgres redis",
     "docker:nursery:db:stop": "cd docker && docker-compose -f docker-compose.nursery.yml stop postgres redis",
-    "docker:nursery:redis:connect": "docker exec -it cruxgarden-redis-nursery redis-cli",
-    "docker:nursery:db:connect": "docker exec -it cruxgarden-postgres-nursery psql -U cruxgarden -d cruxgarden",
-    "docker:nursery:api:connect": "docker exec -it cruxgarden-api-nursery sh"
+    "docker:nursery:redis:connect": "docker exec -it cruxgarden-nursery-redis redis-cli",
+    "docker:nursery:db:connect": "docker exec -it cruxgarden-nursery-postgres psql -U cruxgarden -d cruxgarden",
+    "docker:nursery:api:connect": "docker exec -it cruxgarden-nursery-api sh"
   },
   "engines": {
     "node": ">=18.0.0"

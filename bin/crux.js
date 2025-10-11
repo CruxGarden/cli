@@ -8,6 +8,7 @@ import {
   statusNursery,
   logsNursery,
   cleanNursery,
+  purgeNursery,
   pullNursery,
   resetNursery,
   connectNurseryDb,
@@ -61,6 +62,13 @@ nursery
   .command("clean")
   .description("Stop and remove all Nursery containers and volumes")
   .action(cleanNursery);
+
+nursery
+  .command("purge")
+  .description(
+    "Stop and remove ALL Nursery resources (containers, volumes, AND images)",
+  )
+  .action(purgeNursery);
 
 nursery
   .command("pull")
