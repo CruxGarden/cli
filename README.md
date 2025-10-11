@@ -1,10 +1,5 @@
 <div align="center">
   <img src=".github/banner.jpg" alt="Crux Garden - Where Ideas Grow" width="100%">
-  <p>
-    <a href="https://github.com/CruxGarden/cli/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License"></a>
-    <a href="https://github.com/CruxGarden/cli/issues"><img src="https://img.shields.io/github/issues/CruxGarden/cli" alt="Issues"></a>
-    <a href="https://github.com/CruxGarden/cli/stargazers"><img src="https://img.shields.io/github/stars/CruxGarden/cli" alt="Stars"></a>
-  </p>
 </div>
 
 The Crux Garden CLI tool helps manage the Crux Garden Nursery environment with Docker.
