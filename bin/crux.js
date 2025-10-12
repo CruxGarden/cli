@@ -12,7 +12,7 @@ import {
   logsNursery,
   cleanNursery,
   purgeNursery,
-  pullNursery,
+  updateNursery,
   resetNursery,
   connectNurseryDb,
   connectNurseryRedis,
@@ -80,9 +80,9 @@ nursery
   .action(purgeNursery);
 
 nursery
-  .command("pull")
-  .description("Pull the latest API image from ghcr.io")
-  .action(pullNursery);
+  .command("update")
+  .description("Download the latest API image from ghcr.io")
+  .action(updateNursery);
 
 nursery
   .command("reset")
