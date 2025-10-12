@@ -19,7 +19,10 @@
     "docker:nursery:db:stop": "cd docker && docker-compose -f docker-compose.nursery.yml stop postgres redis",
     "docker:nursery:redis:connect": "docker exec -it cruxgarden-nursery-redis redis-cli",
     "docker:nursery:db:connect": "docker exec -it cruxgarden-nursery-postgres psql -U cruxgarden -d cruxgarden",
-    "docker:nursery:api:connect": "docker exec -it cruxgarden-nursery-api sh"
+    "docker:nursery:api:connect": "docker exec -it cruxgarden-nursery-api sh",
+    "publish:patch": "npm version patch && npm publish && git push && git push --tags",
+    "publish:minor": "npm version minor && npm publish && git push && git push --tags",
+    "publish:major": "npm version major && npm publish && git push && git push --tags"
   },
   "engines": {
     "node": ">=18.0.0"
