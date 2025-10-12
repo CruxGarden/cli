@@ -233,7 +233,8 @@ JWT_SECRET=your-super-secret-jwt-key-min-32-chars
 AWS_ACCESS_KEY_ID=your-key
 AWS_SECRET_ACCESS_KEY=your-secret
 AWS_REGION=us-east-1
-FROM_EMAIL_ADDRESS=demo@example.com
+AWS_SES_FROM_EMAIL=demo@example.com
+AWS_S3_ATTACHMENTS_BUCKET=crux-garden-attachments
 
 # Optional overrides
 CORS_ORIGIN=*
