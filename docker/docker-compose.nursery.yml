@@ -77,6 +77,7 @@ services:
 
       # Security
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-min-32-chars-for-development-only}
+      NURSERY_MODE: ${NURSERY_MODE:-true}
 
       # AWS SES (optional for nursery)
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-dummy}
