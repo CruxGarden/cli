@@ -37,13 +37,14 @@ const nursery = program
   .description("Manage the Nursery environment (demo/trial environment)");
 
 nursery
-  .command("start")
-  .description("Start the Nursery environment (api, postgres, redis)")
+  .command("start [env...]")
+  .description("Start the Nursery environment (app, api, postgres, redis)")
   .option("--db-only", "Start only database services (postgres, redis)")
+  .option("--api-only", "Start only API services (api, postgres, redis) without app")
   .option("--no-banner", "Hide the startup banner")
-  .action((options) => {
+  .action((envVars, options) => {
     if (!options.noBanner) showBanner();
-    startNursery(options);
+    startNursery(options, envVars);
   });
 
 nursery
@@ -52,9 +53,11 @@ nursery
   .action(stopNursery);
 
 nursery
-  .command("restart")
+  .command("restart [env...]")
   .description("Restart the Nursery environment")
-  .action(restartNursery);
+  .option("--db-only", "Restart only database services (postgres, redis)")
+  .option("--api-only", "Restart only API services (api, postgres, redis) without app")
+  .action((envVars, options) => restartNursery(options, envVars));
 
 nursery
   .command("status")
@@ -85,7 +88,7 @@ nursery
   .action(updateNursery);
 
 nursery
-  .command("reset")
+  .command("reset [env...]")
   .description("Complete fresh reset (stop, clean, pull latest image, restart)")
   .action(resetNursery);
 
@@ -95,9 +98,9 @@ const nurseryDb = nursery
   .description("Manage Nursery database services");
 
 nurseryDb
-  .command("start")
+  .command("start [env...]")
   .description("Start only Nursery database services (postgres, redis)")
-  .action(() => startNursery({ dbOnly: true }));
+  .action((envVars) => startNursery({ dbOnly: true }, envVars));
 
 nurseryDb
   .command("stop")
@@ -121,6 +124,11 @@ nurseryRedis
 
 // Nursery API commands
 const nurseryApi = nursery.command("api").description("Manage Nursery API");
+
+nurseryApi
+  .command("start [env...]")
+  .description("Start only Nursery API services (api, postgres, redis) without app")
+  .action((envVars) => startNursery({ apiOnly: true }, envVars));
 
 nurseryApi
   .command("connect")

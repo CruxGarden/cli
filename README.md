@@ -57,7 +57,7 @@ Start the Nursery environment:
 crux nursery start
 ```
 
-The API will be available at `http://localhost:3000` with demo data loaded.
+The App will be available at `http://localhost:8080` and the API at `http://localhost:3000` with demo data loaded.
 
 View logs:
 
@@ -77,15 +77,26 @@ All commands are scoped under `crux nursery`:
 
 ### `crux nursery start`
 
-Start the Nursery environment (PostgreSQL, Redis, Migrations, and API with demo data).
+Start the Nursery environment (App, API, PostgreSQL, Redis with demo data).
 
 ```bash
 crux nursery start
+
+# With inline environment variables
+crux nursery start API_PORT=3001 APP_PORT=8081
+
+# With options and environment variables
+crux nursery start --api-only JWT_SECRET=my-secret
 ```
 
 **Options:**
 
 - `--db-only` - Start only database services (PostgreSQL and Redis)
+- `--api-only` - Start only API services (API, PostgreSQL, Redis) without the App
+
+**Environment Variables:**
+
+You can pass environment variables directly on the command line in `KEY=VALUE` format after the command and options. These override values from your `.env` file.
 
 ### `crux nursery stop`
 
@@ -102,6 +113,11 @@ Restart the Nursery environment.
 ```bash
 crux nursery restart
 ```
+
+**Options:**
+
+- `--db-only` - Restart only database services (PostgreSQL and Redis)
+- `--api-only` - Restart only API services (API, PostgreSQL, Redis) without the App
 
 ### `crux nursery status`
 
@@ -198,6 +214,14 @@ Connect to Nursery Redis with `redis-cli`.
 crux nursery redis connect
 ```
 
+### `crux nursery api start`
+
+Start only Nursery API services (API, PostgreSQL, Redis) without the App.
+
+```bash
+crux nursery api start
+```
+
 ### `crux nursery api connect`
 
 Open a shell in the Nursery API container.
@@ -217,30 +241,80 @@ The Nursery is a production-like demo environment that:
 
 **Services:**
 
+- **App**: `http://localhost:8080` - Crux Garden Web Application
 - **API**: `http://localhost:3000` - Crux Garden API (published image with demo data)
 - **PostgreSQL**: `localhost:5432` - Database
 - **Redis**: `localhost:6379` - Cache
 
 ## Environment Variables
 
-The Nursery environment has defaults for all environment variables, so a `.env` file is optional. However, you can override any variable by creating a `.env` file in your working directory:
+The Nursery environment has defaults for all environment variables, so configuration is optional. You can override variables in two ways:
+
+### 1. Using a `.env` file
+
+Create a `.env` file in your working directory:
 
 ```bash
-# JWT (has dev default, but you should use a different one)
+# Port Mappings
+API_PORT=3000          # External API port
+APP_PORT=8080          # External App port
+POSTGRES_PORT=5432     # External PostgreSQL port
+REDIS_PORT=6379        # External Redis port
+
+# PostgreSQL Configuration
+POSTGRES_DB=cruxgarden
+POSTGRES_USER=cruxgarden
+POSTGRES_PASSWORD=cruxgarden_nursery_password
+
+# Database & Cache URLs (override to use external services)
+DATABASE_URL=postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/cruxgarden
+REDIS_URL=redis://redis:6379
+
+# Security (has dev default, but you should use a different one)
 JWT_SECRET=your-super-secret-jwt-key-min-32-chars
 
-# AWS (defaults to "dummy" values)
+# AWS Configuration (defaults to "dummy" values)
 AWS_ACCESS_KEY_ID=your-key
 AWS_SECRET_ACCESS_KEY=your-secret
 AWS_REGION=us-east-1
 AWS_SES_FROM_EMAIL=demo@example.com
 AWS_S3_ATTACHMENTS_BUCKET=crux-garden-attachments
 
-# Optional overrides
+# Optional Configuration
+NODE_ENV=production
 CORS_ORIGIN=*
 LOG_LEVEL=info
-PORT=3000
+HOSTNAME=0.0.0.0
+DB_POOL_MIN=2
+DB_POOL_MAX=10
+DB_POOL_IDLE_TIMEOUT=30000
+DB_POOL_ACQUIRE_TIMEOUT=60000
+RATE_LIMIT_TTL=60000
+RATE_LIMIT_MAX=100
 ```
+
+### 2. Using inline environment variables
+
+Pass environment variables directly on the command line:
+
+```bash
+# Override ports
+crux nursery start API_PORT=3001 APP_PORT=8081
+
+# Override database connection
+crux nursery start DATABASE_URL=postgresql://user:pass@external-host:5432/db
+
+# Multiple variables
+crux nursery start API_PORT=3001 JWT_SECRET=my-secret AWS_REGION=us-west-2
+
+# Works with all start commands
+crux nursery api start API_PORT=4000
+crux nursery db start POSTGRES_PORT=5433
+crux nursery restart API_PORT=3001
+crux nursery reset JWT_SECRET=new-secret
+```
+
+**Note:** Inline environment variables override values from your `.env` file. You can override `DATABASE_URL` and `REDIS_URL` to connect the API to external database/cache services instead of the bundled ones.
 
 ## Common Workflows
 
@@ -249,10 +323,11 @@ PORT=3000
 Use the Nursery environment for demos, trials, or showcasing features:
 
 ```bash
-# First time setup - pulls image and starts with demo data
+# First time setup - pulls images and starts with demo data
 crux nursery start
 
-# View the demo at http://localhost:3000
+# View the app at http://localhost:8080
+# Or access the API directly at http://localhost:3000
 
 # Stop (keeps data for next demo)
 crux nursery stop
@@ -304,6 +379,7 @@ If you get an error about ports being in use, stop any existing services:
 
 ```bash
 # Check what's using the ports
+lsof -i :8080  # Nursery App
 lsof -i :3000  # Nursery API
 lsof -i :5432  # Nursery PostgreSQL
 lsof -i :6379  # Nursery Redis

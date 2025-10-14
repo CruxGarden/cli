@@ -80,7 +80,7 @@ lib/commands.js::startNursery()
     ↓
 execSync('docker-compose -f docker-compose.nursery.yml up -d', { cwd: dockerDir })
     ↓
-Docker starts: postgres, redis, migrations, api
+Docker starts: postgres, redis, migrations, api, app
 ```
 
 ### Docker Integration
@@ -92,17 +92,18 @@ All commands run Docker Compose from the `docker/` directory using `docker-compo
 
 **Container Naming Convention:**
 
-- Nursery: `cruxgarden-postgres-nursery`, `cruxgarden-redis-nursery`, `cruxgarden-api-nursery`
+- Nursery: `cruxgarden-nursery-app`, `cruxgarden-nursery-api`, `cruxgarden-nursery-postgres`, `cruxgarden-nursery-redis`
 
 **Port Mappings:**
 
-- Nursery: API:3000, PostgreSQL:5432, Redis:6379
+- Nursery: App:8080, API:3000, PostgreSQL:5432, Redis:6379
 
 ### Nursery Environment
 
 The CLI manages the **Nursery environment only**:
 
-- Published image from ghcr.io/cruxgarden/api:latest
+- Published app image from ghcr.io/cruxgarden/app:latest
+- Published API image from ghcr.io/cruxgarden/api:latest
 - Bundled PostgreSQL + Redis
 - Common + Nursery (demo) seeds
 - Production-like environment for demos and trials
@@ -113,8 +114,9 @@ The CLI manages the **Nursery environment only**:
 
 All commands are under the `crux nursery` namespace:
 
-- `crux nursery start` - Start full nursery environment
-- `crux nursery start --db-only` - Start only databases
+- `crux nursery start` - Start full nursery environment (app + api + databases)
+- `crux nursery start --db-only` - Start only databases (postgres + redis)
+- `crux nursery start --api-only` - Start API services only (api + databases, no app)
 - `crux nursery stop` - Stop nursery
 - `crux nursery restart` - Restart nursery
 - `crux nursery status` - Show service status
@@ -128,6 +130,7 @@ All commands are under the `crux nursery` namespace:
 - `crux nursery db stop` - Stop databases
 - `crux nursery db connect` - Connect to postgres with psql
 - `crux nursery redis connect` - Connect to redis with redis-cli
+- `crux nursery api start` - Start API services only (api + databases, no app)
 - `crux nursery api connect` - Shell into API container
 
 ## Implementation Patterns

@@ -12,15 +12,15 @@ services:
     image: postgres:16-alpine
     container_name: cruxgarden-nursery-postgres
     environment:
-      POSTGRES_DB: cruxgarden
-      POSTGRES_USER: cruxgarden
-      POSTGRES_PASSWORD: cruxgarden_nursery_password
+      POSTGRES_DB: ${POSTGRES_DB:-cruxgarden}
+      POSTGRES_USER: ${POSTGRES_USER:-cruxgarden}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cruxgarden_nursery_password}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data_nursery:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cruxgarden"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cruxgarden}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -31,7 +31,7 @@ services:
     container_name: cruxgarden-nursery-redis
     command: redis-server --appendonly yes
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data_nursery:/data
     healthcheck:
@@ -48,8 +48,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      NODE_ENV: production
-      DATABASE_URL: postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/cruxgarden
+      NODE_ENV: ${NODE_ENV:-production}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/cruxgarden}
     command: ["npm", "run", "migrate:nursery"]
     restart: "no"
 
@@ -64,16 +64,16 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "${PORT:-3000}:3000"
+      - "${API_PORT:-3000}:3000"
     environment:
       # Application
-      NODE_ENV: production
+      NODE_ENV: ${NODE_ENV:-production}
       PORT: 3000
-      HOSTNAME: 0.0.0.0
+      HOSTNAME: ${HOSTNAME:-0.0.0.0}
 
-      # Bundled Services
-      DATABASE_URL: postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/cruxgarden
-      REDIS_URL: redis://redis:6379
+      # Bundled Services (can override to use external services)
+      DATABASE_URL: ${DATABASE_URL:-postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/cruxgarden}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
 
       # Security
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-min-32-chars-for-development-only}
@@ -106,6 +106,17 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  # Crux Garden App - Web Application
+  app:
+    image: ghcr.io/cruxgarden/app:latest
+    container_name: cruxgarden-nursery-app
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${APP_PORT:-8080}:80"
 
 volumes:
   postgres_data_nursery:
