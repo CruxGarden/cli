@@ -70,6 +70,7 @@ services:
       NODE_ENV: ${NODE_ENV:-production}
       PORT: 3000
       HOSTNAME: ${HOSTNAME:-0.0.0.0}
+      BASE_URL: ${BASE_URL:-http://localhost:3000}
 
       # Bundled Services (can override to use external services)
       DATABASE_URL: ${DATABASE_URL:-postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/cruxgarden}
