@@ -38,9 +38,8 @@ const nursery = program
 
 nursery
   .command("start [env...]")
-  .description("Start the Nursery environment (app, api, postgres, redis)")
+  .description("Start the Nursery environment (api, postgres, redis)")
   .option("--db-only", "Start only database services (postgres, redis)")
-  .option("--api-only", "Start only API services (api, postgres, redis) without app")
   .option("--no-banner", "Hide the startup banner")
   .action((envVars, options) => {
     if (!options.noBanner) showBanner();
@@ -56,7 +55,6 @@ nursery
   .command("restart [env...]")
   .description("Restart the Nursery environment")
   .option("--db-only", "Restart only database services (postgres, redis)")
-  .option("--api-only", "Restart only API services (api, postgres, redis) without app")
   .action((envVars, options) => restartNursery(options, envVars));
 
 nursery
@@ -84,7 +82,7 @@ nursery
 
 nursery
   .command("update")
-  .description("Download the latest API image from ghcr.io")
+  .description("Download the latest images from ghcr.io")
   .action(updateNursery);
 
 nursery
@@ -124,11 +122,6 @@ nurseryRedis
 
 // Nursery API commands
 const nurseryApi = nursery.command("api").description("Manage Nursery API");
-
-nurseryApi
-  .command("start [env...]")
-  .description("Start only Nursery API services (api, postgres, redis) without app")
-  .action((envVars) => startNursery({ apiOnly: true }, envVars));
 
 nurseryApi
   .command("connect")

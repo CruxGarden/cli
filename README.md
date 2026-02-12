@@ -78,7 +78,7 @@ Start the Nursery environment:
 crux nursery start
 ```
 
-The App will be available at `http://localhost:8080` and the API at `http://localhost:3000` with demo data loaded.
+The API will be available at `http://localhost:3000` with demo data loaded.
 
 View logs:
 
@@ -98,22 +98,21 @@ All commands are scoped under `crux nursery`:
 
 ### `crux nursery start`
 
-Start the Nursery environment (App, API, PostgreSQL, Redis with demo data).
+Start the Nursery environment (API, PostgreSQL, Redis with demo data).
 
 ```bash
 crux nursery start
 
 # With inline environment variables
-crux nursery start API_PORT=3001 APP_PORT=8081
+crux nursery start API_PORT=3001
 
 # With options and environment variables
-crux nursery start --api-only JWT_SECRET=my-secret
+crux nursery start --db-only JWT_SECRET=my-secret
 ```
 
 **Options:**
 
 - `--db-only` - Start only database services (PostgreSQL and Redis)
-- `--api-only` - Start only API services (API, PostgreSQL, Redis) without the App
 
 **Environment Variables:**
 
@@ -138,7 +137,6 @@ crux nursery restart
 **Options:**
 
 - `--db-only` - Restart only database services (PostgreSQL and Redis)
-- `--api-only` - Restart only API services (API, PostgreSQL, Redis) without the App
 
 ### `crux nursery status`
 
@@ -235,14 +233,6 @@ Connect to Nursery Redis with `redis-cli`.
 crux nursery redis connect
 ```
 
-### `crux nursery api start`
-
-Start only Nursery API services (API, PostgreSQL, Redis) without the App.
-
-```bash
-crux nursery api start
-```
-
 ### `crux nursery api connect`
 
 Open a shell in the Nursery API container.
@@ -262,7 +252,6 @@ The Nursery is a production-like demo environment that:
 
 **Services:**
 
-- **App**: `http://localhost:8080` - Crux Garden Web Application
 - **API**: `http://localhost:3000` - Crux Garden API (published image with demo data)
 - **PostgreSQL**: `localhost:5432` - Database
 - **Redis**: `localhost:6379` - Cache
@@ -278,7 +267,6 @@ Create a `.env` file in your working directory:
 ```bash
 # Port Mappings
 API_PORT=3000          # External API port
-APP_PORT=8080          # External App port
 POSTGRES_PORT=5432     # External PostgreSQL port
 REDIS_PORT=6379        # External Redis port
 
@@ -320,7 +308,7 @@ Pass environment variables directly on the command line:
 
 ```bash
 # Override ports
-crux nursery start API_PORT=3001 APP_PORT=8081
+crux nursery start API_PORT=3001
 
 # Override database connection
 crux nursery start DATABASE_URL=postgresql://user:pass@external-host:5432/db
@@ -347,8 +335,7 @@ Use the Nursery environment for demos, trials, or showcasing features:
 # First time setup - pulls images and starts with demo data
 crux nursery start
 
-# View the app at http://localhost:8080
-# Or access the API directly at http://localhost:3000
+# Access the API at http://localhost:3000
 
 # Stop (keeps data for next demo)
 crux nursery stop
@@ -400,7 +387,6 @@ If you get an error about ports being in use, stop any existing services:
 
 ```bash
 # Check what's using the ports
-lsof -i :8080  # Nursery App
 lsof -i :3000  # Nursery API
 lsof -i :5432  # Nursery PostgreSQL
 lsof -i :6379  # Nursery Redis
