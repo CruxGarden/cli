@@ -287,7 +287,7 @@ AWS_ACCESS_KEY_ID=your-key
 AWS_SECRET_ACCESS_KEY=your-secret
 AWS_REGION=us-east-1
 AWS_SES_FROM_EMAIL=demo@example.com
-AWS_S3_ATTACHMENTS_BUCKET=crux-garden-attachments
+AWS_S3_ARTIFACTS_BUCKET=artifacts.crux.garden
 
 # Optional Configuration
 NODE_ENV=production

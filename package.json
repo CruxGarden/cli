@@ -22,7 +22,8 @@
     "docker:nursery:api:connect": "docker exec -it cruxgarden-nursery-api sh",
     "publish:patch": "npm version patch && npm publish && git push && git push --tags",
     "publish:minor": "npm version minor && npm publish && git push && git push --tags",
-    "publish:major": "npm version major && npm publish && git push && git push --tags"
+    "publish:major": "npm version major && npm publish && git push && git push --tags",
+    "verify": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests"
   },
   "engines": {
     "node": ">=18.0.0"

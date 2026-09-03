@@ -248,7 +248,7 @@ The CLI doesn't directly use environment variables - it passes them through to D
 - `AWS_SECRET_ACCESS_KEY` - Defaults to "dummy"
 - `AWS_REGION` - Defaults to "us-east-1"
 - `AWS_SES_FROM_EMAIL` - Defaults to "noreply@example.com"
-- `AWS_S3_ATTACHMENTS_BUCKET` - Defaults to "crux-garden-attachments"
+- `AWS_S3_ARTIFACTS_BUCKET` - Defaults to "artifacts.crux.garden"
 - `CORS_ORIGIN` - Defaults to "\*"
 - `LOG_LEVEL` - Defaults to "info"
 - `PORT` - Defaults to 3000
