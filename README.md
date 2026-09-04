@@ -30,7 +30,7 @@ The **Nursery** is a production-like demo environment with sample data, perfect 
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) installed and running
-- [Node.js](https://nodejs.org/) 18 or higher
+- [Node.js](https://nodejs.org/) 22 or higher (`.nvmrc`)
 
 ## Installation
 
@@ -157,12 +157,13 @@ crux nursery logs
 crux nursery logs -f
 ```
 
-### `crux nursery pull`
+### `crux nursery update`
 
-Pull the latest API image from GitHub Container Registry.
+Pull the latest images (API, PostgreSQL, Redis) from their registries. `crux nursery pull` is an
+alias.
 
 ```bash
-crux nursery pull
+crux nursery update
 ```
 
 ### `crux nursery reset`
@@ -317,7 +318,7 @@ crux nursery start DATABASE_URL=postgresql://user:pass@external-host:5432/db
 crux nursery start API_PORT=3001 JWT_SECRET=my-secret AWS_REGION=us-west-2
 
 # Works with all start commands
-crux nursery api start API_PORT=4000
+crux nursery start API_PORT=4000
 crux nursery db start POSTGRES_PORT=5433
 crux nursery restart API_PORT=3001
 crux nursery reset JWT_SECRET=new-secret
@@ -352,10 +353,10 @@ crux nursery reset
 Pull the latest published image and test:
 
 ```bash
-# Pull latest image
-crux nursery pull
+# Pull latest images
+crux nursery update
 
-# Restart with latest image
+# Restart with latest images
 crux nursery restart
 
 # Or do a complete fresh reset
@@ -419,10 +420,10 @@ You should see `Up (healthy)` for postgres.
 
 ### Nursery image is outdated
 
-Pull the latest image and restart:
+Pull the latest images and restart:
 
 ```bash
-crux nursery pull
+crux nursery update
 crux nursery restart
 
 # Or do a complete fresh reset

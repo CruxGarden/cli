@@ -1,16 +1,22 @@
 # Security Policy
 
+This file covers the `crux` **CLI** (`@cruxgarden/cli`), which runs the Nursery demo environment
+with Docker. The API image it starts has its own policy in the `api` repository; the desktop app
+has one in the `app` repository.
+
 ## Supported Versions
 
-We release patches for security vulnerabilities. Currently supported versions:
+Security fixes go into the current release line only (`version` in `package.json`).
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x     | :white_check_mark: |
+| 0.0.x   | :white_check_mark: |
+| older   | :x:                |
 
 ## Reporting a Vulnerability
 
-We take the security of Crux Garden seriously. If you believe you have found a security vulnerability, please report it to us as described below.
+We take the security of Crux Garden seriously. If you believe you have found a security
+vulnerability, please report it to us as described below.
 
 ### Please do NOT:
 
@@ -25,7 +31,8 @@ We take the security of Crux Garden seriously. If you believe you have found a s
 
 ### What to include in your report:
 
-- Type of vulnerability (e.g., SQL injection, XSS, authentication bypass)
+- Type of vulnerability (e.g. command injection through an argument, a secret written to disk or
+  to logs, a container exposed beyond localhost)
 - Full paths of source file(s) related to the vulnerability
 - Location of the affected source code (tag/branch/commit or direct URL)
 - Step-by-step instructions to reproduce the issue
@@ -40,43 +47,47 @@ We take the security of Crux Garden seriously. If you believe you have found a s
 - **Resolution** - Once the vulnerability is fixed, we will notify you and may publicly disclose it (with your permission)
 - **Credit** - We will credit you in the security advisory (unless you prefer to remain anonymous)
 
-## Security Best Practices
+## What the CLI does, and what to watch
 
-When deploying Crux Garden, please ensure:
+The CLI is a thin wrapper over `docker-compose` (`lib/commands.js`, `docker/docker-compose.nursery.yml`).
+It starts the published images — `ghcr.io/cruxgarden/api:latest`, `postgres:16-alpine`,
+`redis:7-alpine` — as a local demo environment. It has no account, sends nothing to crux.garden,
+and collects no telemetry.
 
-### Environment Variables
-- Never commit `.env` files to version control
-- Use strong, unique values for `JWT_SECRET`
-- Rotate secrets regularly
-- Use environment-specific configurations
+### The Nursery is a demo, not a deployment
 
-### Database Security
-- Use strong database passwords
-- Enable SSL/TLS for database connections
-- Restrict database access to only required IP addresses
-- Regularly backup your database
+- Ports (`API_PORT` 3000, `POSTGRES_PORT` 5432, `REDIS_PORT` 6379) bind on the local machine.
+  Do not expose them to a network with the default credentials.
+- Every setting has a development default, including `JWT_SECRET` and `POSTGRES_PASSWORD`. If a
+  Nursery is ever reachable by anyone but you, override both (see the README's environment
+  variables section) and treat the data as disposable.
+- AWS variables default to dummy values, so the API runs in mock mode: emails are logged, nothing
+  is uploaded. Real AWS keys make it a real deployment — follow the API repository's policy then.
 
-### API Security
-- Always use HTTPS in production
-- Implement rate limiting
-- Keep dependencies up to date
-- Monitor for suspicious activity
+### Secrets and environment files
 
-### Authentication
-- Use secure session management
-- Implement proper token expiration
-- Never store sensitive data in JWT payloads
-- Use refresh token rotation
+- Configuration comes from a `.env` in the working directory and from `KEY=VALUE` arguments after
+  a command. Never commit a `.env`; never paste real keys into a shell history you share.
+- Inline `KEY=VALUE` arguments are passed to `docker-compose` as environment — they are visible in
+  the process list on your machine for the duration of the command.
+- No secrets are baked into images. `crux nursery clean` removes containers and volumes (all
+  data); `crux nursery purge` also removes the images.
+
+### Reporting-worthy issues in the CLI itself
+
+- An argument or environment value reaching a shell unquoted (`runCommand` in `lib/commands.js`)
+- A secret being written to a log, a file outside the working directory, or the banner
+- A compose change that publishes a port on `0.0.0.0` without the README saying so
 
 ## Security Updates
 
-Security updates will be released as soon as possible after a vulnerability is confirmed. Subscribe to GitHub releases or watch this repository to stay informed about security updates.
+Security fixes are published to npm as new `@cruxgarden/cli` versions; `npm install -g
+@cruxgarden/cli` picks them up. Watch this repository to be notified.
 
 ## Additional Resources
 
+- [Docker security](https://docs.docker.com/engine/security/)
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [NestJS Security Best Practices](https://docs.nestjs.com/security/authentication)
-- [Node.js Security Best Practices](https://nodejs.org/en/docs/guides/security/)
 
 ## Contact
 

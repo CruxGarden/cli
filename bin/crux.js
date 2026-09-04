@@ -82,6 +82,7 @@ nursery
 
 nursery
   .command("update")
+  .alias("pull")
   .description("Download the latest images from ghcr.io")
   .action(updateNursery);
 
