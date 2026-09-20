@@ -80,6 +80,10 @@ services:
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-min-32-chars-for-development-only}
       NURSERY_MODE: ${NURSERY_MODE:-true}
 
+      # The API refuses to boot in production without Stripe keys; the nursery
+      # is a demo, so it runs the mock billing provider on purpose.
+      BILLING_ALLOW_MOCK: ${BILLING_ALLOW_MOCK:-1}
+
       # AWS SES (optional for nursery)
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-dummy}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-dummy}
