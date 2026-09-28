@@ -25,11 +25,11 @@ Will Stepp, October 2025
 
 The Crux Garden CLI tool helps manage the Crux Garden Nursery environment with Docker.
 
-The **Nursery** is a production-like demo environment with sample data, perfect for trials, demos, and showcasing features.
+The **Nursery** is a local demo environment with sample data, perfect for trials, demos, and showcasing features.
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) installed and running
+- [Docker](https://docs.docker.com/get-docker/) with Compose v2 installed and running
 - [Node.js](https://nodejs.org/) 22 or higher (`.nvmrc`)
 
 ## Installation
@@ -244,7 +244,7 @@ crux nursery api connect
 
 ## What is the Nursery?
 
-The Nursery is a production-like demo environment that:
+The Nursery is a local demo environment that:
 
 - **Uses the published Docker image** from `ghcr.io/cruxgarden/api:latest`
 - **Includes demo data** - Sample cruxes, paths, and relationships for showcasing
@@ -258,6 +258,10 @@ The Nursery is a production-like demo environment that:
 - **Redis**: `localhost:6379` - Cache
 
 ## Environment Variables
+
+The Nursery binds its API, PostgreSQL and Redis ports to `127.0.0.1`. It deliberately enables demo authentication and runs in development mode. It is for local use.
+
+The CLI generates its signing key once in `~/.config/cruxgarden/nursery.env` (or `$XDG_CONFIG_HOME/cruxgarden/nursery.env`) with owner-only file permissions. Repeated starts retain it. Your working directory’s `.env` overrides these defaults; exported variables and command-line values override both. Command-line values are not printed. Direct Compose users must provide `JWT_SECRET` themselves.
 
 The Nursery environment has defaults for all environment variables, so configuration is optional. You can override variables in two ways:
 
@@ -281,7 +285,8 @@ DATABASE_URL=postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/c
 REDIS_URL=redis://redis:6379
 
 # Security (has dev default, but you should use a different one)
-JWT_SECRET=your-super-secret-jwt-key-min-32-chars
+# Optional: supply your own random signing key. The CLI creates a private persistent key by default.
+# JWT_SECRET=<at least 32 random characters>
 
 # AWS Configuration (defaults to "dummy" values)
 AWS_ACCESS_KEY_ID=your-key
@@ -291,7 +296,7 @@ AWS_SES_FROM_EMAIL=demo@example.com
 AWS_S3_ARTIFACTS_BUCKET=artifacts.crux.garden
 
 # Optional Configuration
-NODE_ENV=production
+# Nursery always uses development mode; production refuses demo authentication.
 CORS_ORIGIN=*
 LOG_LEVEL=info
 HOSTNAME=0.0.0.0

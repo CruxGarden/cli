@@ -16,7 +16,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-cruxgarden}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cruxgarden_nursery_password}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data_nursery:/var/lib/postgresql/data
     healthcheck:
@@ -31,7 +31,7 @@ services:
     container_name: cruxgarden-nursery-redis
     command: redis-server --appendonly yes
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data_nursery:/data
     healthcheck:
@@ -48,7 +48,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: development
+      NURSERY_MODE: ${NURSERY_MODE:-true}
       DATABASE_URL: ${DATABASE_URL:-postgresql://cruxgarden:cruxgarden_nursery_password@postgres:5432/cruxgarden}
     command: ["npm", "run", "migrate:nursery"]
     restart: "no"
@@ -64,10 +65,10 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "${API_PORT:-3000}:3000"
+      - "127.0.0.1:${API_PORT:-3000}:3000"
     environment:
       # Application
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: development
       PORT: 3000
       HOSTNAME: ${HOSTNAME:-0.0.0.0}
       BASE_URL: ${BASE_URL:-http://localhost:3000}
@@ -77,11 +78,10 @@ services:
       REDIS_URL: ${REDIS_URL:-redis://redis:6379}
 
       # Security
-      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-min-32-chars-for-development-only}
+      JWT_SECRET: ${JWT_SECRET:?Use crux nursery start or provide a random JWT_SECRET}
       NURSERY_MODE: ${NURSERY_MODE:-true}
 
-      # The API refuses to boot in production without Stripe keys; the nursery
-      # is a demo, so it runs the mock billing provider on purpose.
+      # The Nursery is a local demo and uses mock billing intentionally.
       BILLING_ALLOW_MOCK: ${BILLING_ALLOW_MOCK:-1}
 
       # AWS SES (optional for nursery)
@@ -93,7 +93,7 @@ services:
       AWS_S3_SYNC_BUCKET: ${AWS_S3_SYNC_BUCKET:-sync.crux.garden}
 
       # Optional Configuration
-      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       DB_POOL_MIN: ${DB_POOL_MIN:-2}
       DB_POOL_MAX: ${DB_POOL_MAX:-10}

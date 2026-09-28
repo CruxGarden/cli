@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Crux Garden CLI** (`@cruxgarden/cli`) is a command-line tool for managing the Crux Garden Nursery environment with Docker. The Nursery is a production-like demo environment with sample data, perfect for trials, demos, and showcasing features.
+**Crux Garden CLI** (`@cruxgarden/cli`) is a command-line tool for managing the Crux Garden Nursery environment with Docker. The Nursery is a local demo environment with sample data, perfect for trials, demos, and showcasing features.
 
 This CLI is part of the Crux Garden distribution strategy:
 
@@ -14,7 +14,7 @@ This CLI is part of the Crux Garden distribution strategy:
 
 ## Technology Stack
 
-- **Runtime**: Node.js 18+ (ESM modules)
+- **Runtime**: Node.js 22+ (ESM modules)
 - **CLI Framework**: Commander.js (command structure)
 - **UI Libraries**: Chalk (colors), Ora (spinners)
 - **Containerization**: Docker Compose
@@ -36,7 +36,7 @@ cli/
 **Key Files:**
 
 - `bin/crux.js` - Defines all CLI commands using Commander.js (all under `crux nursery`)
-- `lib/commands.js` - Implements command logic (runs Docker Compose via execSync)
+- `lib/commands.js` - Implements command logic (runs Docker Compose with explicit argument arrays)
 
 ## Development Commands
 
@@ -78,7 +78,7 @@ bin/crux.js (Commander.js parses command)
     ↓
 lib/commands.js::startNursery()
     ↓
-execSync('docker-compose -f docker-compose.nursery.yml up -d', { cwd: dockerDir })
+spawn('docker', ['compose', '--env-file', defaults, '-f', 'docker-compose.nursery.yml', 'up', '-d'], { cwd: dockerDir })
     ↓
 Docker starts: postgres, redis, migrations, api
 ```
@@ -87,7 +87,7 @@ Docker starts: postgres, redis, migrations, api
 
 All commands run Docker Compose from the `docker/` directory using `docker-compose.nursery.yml`. The CLI uses:
 
-- `execSync()` for synchronous Docker commands (start, stop, status)
+- `execFileSync()` for synchronous Docker commands (start, stop, status)
 - `spawn()` for interactive commands (logs -f, db:connect, redis:connect)
 
 **Container Naming Convention:**
@@ -105,7 +105,7 @@ The CLI manages the **Nursery environment only**:
 - Published API image from ghcr.io/cruxgarden/api:latest
 - Bundled PostgreSQL + Redis
 - Common + Nursery (demo) seeds
-- Production-like environment for demos and trials
+- Development mode with explicit demo authentication, loopback port bindings and a private persistent signing key
 
 ## Current Implementation Status
 
@@ -150,7 +150,7 @@ nursery
 export async function myCommandHandler(options) {
   const spinner = ora("Doing something...").start();
   try {
-    runCommand("docker-compose -f docker-compose.nursery.yml some-command", {
+    runCommand([...nurseryCompose(), "some-command"], {
       silent: true,
     });
     spinner.succeed("Done!");
@@ -188,14 +188,14 @@ All Docker commands run from `dockerDir` (the `docker/` subdirectory):
 
 ```javascript
 const dockerDir = join(__dirname, "..", "docker");
-runCommand("docker-compose -f docker-compose.nursery.yml up -d", {
+runCommand([...nurseryCompose(), "up", "-d"], {
   cwd: dockerDir,
 });
 ```
 
 ### Silent vs Interactive Commands
 
-- **Silent commands** (start, stop, restart): Use `execSync` with `stdio: 'pipe'` and show spinners
+- **Silent commands** (start, stop, restart): Use `execFileSync` with `stdio: 'pipe'` and show spinners
 - **Interactive commands** (logs -f, db:connect): Use `spawn` with `stdio: 'inherit'` for TTY passthrough
 
 ### Signal Handling for Interactive Commands
@@ -203,14 +203,10 @@ runCommand("docker-compose -f docker-compose.nursery.yml up -d", {
 Commands like `logs -f` properly handle Ctrl+C:
 
 ```javascript
-const child = spawn(
-  "docker-compose",
-  ["-f", "docker-compose.nursery.yml", "logs", "-f"],
-  {
-    cwd: dockerDir,
-    stdio: "inherit",
-  },
-);
+const child = spawn("docker", [...nurseryCompose().slice(1), "logs", "-f"], {
+  cwd: dockerDir,
+  stdio: "inherit",
+});
 
 process.on("SIGINT", () => {
   child.kill("SIGINT");
