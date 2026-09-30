@@ -1,3 +1,5 @@
+<img src=".github/banner.jpg" alt="Crux Garden CLI — grow anything" width="100%">
+
 # Crux Garden Nursery CLI
 
 This package manages the optional Docker Nursery environment. It does not control the desktop app or share its local database.
