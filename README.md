@@ -1,31 +1,10 @@
-<div align="center">
-  <img src=".github/banner.jpg" alt="Crux Garden - Grow Anything" width="100%">
-</div>
+# Crux Garden Nursery CLI
 
-## What is Crux Garden?
+This package manages the optional Docker Nursery environment. It does not control the desktop app or share its local database.
 
-Crux Garden is a model of how ideas manifest and develop over time. The heart of the model is the **Crux**, an atomic representation of an idea. In our implementation, a Crux can be text, media, code, or any digital content worth preserving. But Cruxes, just like ideas, don't exist in isolation. Ideas have origins. They lead to new ideas. They evolve. And often, they randomly connect. So it is with Cruxes. In Crux Garden, there are four types of relationships Cruxes can have with each other. These are called **Dimensions**:
+The desktop app bundles its own companion CLI. In **Settings → Agents**, choose **Install crux command**, add the shown directory to the front of PATH, and enable the desired Agent Host. That command supports `crux list`, `crux open ID`, `crux tools --json`, and `crux call NAME JSON`, using the running app's existing tools and approvals. It requires neither Docker nor a separate Node installation.
 
-- **GATES** — Cruxes which influenced or inspired a Crux; its origins and sources.
-- **GARDENS** — Cruxes which emerged or grew from a Crux, its creations and consequences.
-- **GROWTH** — How a Crux developed over time, its transformation and refinement.
-- **GRAFTS** — Cruxes which connect to a Crux laterally, its associations and resonances.
-
-These four Dimensions capture the fundamental ways that Cruxes, or ideas, relate to one another.
-
-The power of a system that models ideas at such a primitive scale is that literally any idea or framework of ideas can be realized inside Crux Garden: interactive fiction with evolving storylines, personal knowledge bases connecting insights across domains, product development roadmaps linking requirements to releases, research systems tracking citations and discoveries, or anything else where ideas have origins, consequences, transformation, and connection.
-
-Along with Cruxes and Dimensions, there are several other types including Tags, Themes, and Paths. See the database schema in `db/schema.sql` or the API documentation at `/docs` for details.
-
-For further reading on the goals and ambitions of Crux Garden, explore the history of the [Digital Garden](https://maggieappleton.com/garden-history) movement and the 1945 essay [As We May Think](https://en.wikipedia.org/wiki/As_We_May_Think) by Vannevar Bush.
-
-Will Stepp, October 2025
-
-## CLI
-
-The Crux Garden CLI tool helps manage the Crux Garden Nursery environment with Docker.
-
-The **Nursery** is a local demo environment with sample data, perfect for trials, demos, and showcasing features.
+For Nursery, use `crux-nursery nursery start` after installing this package. The historical `crux nursery` alias remains; if both CLIs are installed, use `crux-nursery` explicitly to avoid PATH ambiguity. The desktop installer does not overwrite an existing command at its destination.
 
 ## Prerequisites
 
@@ -63,8 +42,8 @@ npm install
 # Link the CLI globally for testing
 npm link
 
-# Now you can use the `crux` command
-crux --help
+# Now you can use the Nursery command
+crux-nursery --help
 
 # When done, unlink
 npm unlink -g @cruxgarden/cli
@@ -75,7 +54,7 @@ npm unlink -g @cruxgarden/cli
 Start the Nursery environment:
 
 ```bash
-crux nursery start
+crux-nursery nursery start
 ```
 
 The API will be available at `http://localhost:3000` with demo data loaded.
@@ -83,31 +62,31 @@ The API will be available at `http://localhost:3000` with demo data loaded.
 View logs:
 
 ```bash
-crux nursery logs
+crux-nursery nursery logs
 ```
 
 Stop the environment:
 
 ```bash
-crux nursery stop
+crux-nursery nursery stop
 ```
 
 ## Commands
 
-All commands are scoped under `crux nursery`:
+All commands are scoped under `crux-nursery nursery`:
 
-### `crux nursery start`
+### `crux-nursery nursery start`
 
 Start the Nursery environment (API, PostgreSQL, Redis with demo data).
 
 ```bash
-crux nursery start
+crux-nursery nursery start
 
 # With inline environment variables
-crux nursery start API_PORT=3001
+crux-nursery nursery start API_PORT=3001
 
 # With options and environment variables
-crux nursery start --db-only JWT_SECRET=my-secret
+crux-nursery nursery start --db-only JWT_SECRET=my-secret
 ```
 
 **Options:**
@@ -118,76 +97,76 @@ crux nursery start --db-only JWT_SECRET=my-secret
 
 You can pass environment variables directly on the command line in `KEY=VALUE` format after the command and options. These override values from your `.env` file.
 
-### `crux nursery stop`
+### `crux-nursery nursery stop`
 
 Stop the Nursery environment. Data is preserved.
 
 ```bash
-crux nursery stop
+crux-nursery nursery stop
 ```
 
-### `crux nursery restart`
+### `crux-nursery nursery restart`
 
 Restart the Nursery environment.
 
 ```bash
-crux nursery restart
+crux-nursery nursery restart
 ```
 
 **Options:**
 
 - `--db-only` - Restart only database services (PostgreSQL and Redis)
 
-### `crux nursery status`
+### `crux-nursery nursery status`
 
 Show the status of all Nursery services.
 
 ```bash
-crux nursery status
+crux-nursery nursery status
 ```
 
-### `crux nursery logs`
+### `crux-nursery nursery logs`
 
 View logs from all Nursery services.
 
 ```bash
-crux nursery logs
+crux-nursery nursery logs
 
 # Follow logs (like tail -f)
-crux nursery logs -f
+crux-nursery nursery logs -f
 ```
 
-### `crux nursery update`
+### `crux-nursery nursery update`
 
-Pull the latest images (API, PostgreSQL, Redis) from their registries. `crux nursery pull` is an
+Pull the latest images (API, PostgreSQL, Redis) from their registries. `crux-nursery nursery pull` is an
 alias.
 
 ```bash
-crux nursery update
+crux-nursery nursery update
 ```
 
-### `crux nursery reset`
+### `crux-nursery nursery reset`
 
 Complete fresh reset: stops everything, deletes all data and volumes, pulls the latest image, and starts fresh. **Warning: This deletes all data!**
 
 ```bash
-crux nursery reset
+crux-nursery nursery reset
 ```
 
-### `crux nursery clean`
+### `crux-nursery nursery clean`
 
 Stop and remove all Nursery containers and volumes. **Warning: This deletes all data!**
 
 ```bash
-crux nursery clean
+crux-nursery nursery clean
 ```
 
-### `crux nursery purge`
+### `crux-nursery nursery purge`
 
 Stop and remove ALL Nursery resources including containers, volumes, AND images. **Warning: This deletes everything including downloaded images! You'll need to re-download images on next start.**
 
 ```bash
-crux nursery purge
+crux-nursery nursery purge
 ```
 
 This is more aggressive than `clean` - it removes Docker images too, which means:
@@ -196,28 +175,28 @@ This is more aggressive than `clean` - it removes Docker images too, which means
 - Requires re-downloading images (~100-500MB) on next start
 - Useful when you want to completely remove all traces of the Nursery
 
-### `crux nursery db start`
+### `crux-nursery nursery db start`
 
 Start only Nursery database services (PostgreSQL and Redis).
 
 ```bash
-crux nursery db start
+crux-nursery nursery db start
 ```
 
-### `crux nursery db stop`
+### `crux-nursery nursery db stop`
 
 Stop Nursery database services.
 
 ```bash
-crux nursery db stop
+crux-nursery nursery db stop
 ```
 
-### `crux nursery db connect`
+### `crux-nursery nursery db connect`
 
 Connect to the Nursery PostgreSQL database with `psql`.
 
 ```bash
-crux nursery db connect
+crux-nursery nursery db connect
 ```
 
 Useful psql commands:
@@ -226,20 +205,20 @@ Useful psql commands:
 - `\d table_name` - Describe a table
 - `\q` - Quit
 
-### `crux nursery redis connect`
+### `crux-nursery nursery redis connect`
 
 Connect to Nursery Redis with `redis-cli`.
 
 ```bash
-crux nursery redis connect
+crux-nursery nursery redis connect
 ```
 
-### `crux nursery api connect`
+### `crux-nursery nursery api connect`
 
 Open a shell in the Nursery API container.
 
 ```bash
-crux nursery api connect
+crux-nursery nursery api connect
 ```
 
 ## What is the Nursery?
@@ -314,19 +293,19 @@ Pass environment variables directly on the command line:
 
 ```bash
 # Override ports
-crux nursery start API_PORT=3001
+crux-nursery nursery start API_PORT=3001
 
 # Override database connection
-crux nursery start DATABASE_URL=postgresql://user:pass@external-host:5432/db
+crux-nursery nursery start DATABASE_URL=postgresql://user:pass@external-host:5432/db
 
 # Multiple variables
-crux nursery start API_PORT=3001 JWT_SECRET=my-secret AWS_REGION=us-west-2
+crux-nursery nursery start API_PORT=3001 JWT_SECRET=my-secret AWS_REGION=us-west-2
 
 # Works with all start commands
-crux nursery start API_PORT=4000
-crux nursery db start POSTGRES_PORT=5433
-crux nursery restart API_PORT=3001
-crux nursery reset JWT_SECRET=new-secret
+crux-nursery nursery start API_PORT=4000
+crux-nursery nursery db start POSTGRES_PORT=5433
+crux-nursery nursery restart API_PORT=3001
+crux-nursery nursery reset JWT_SECRET=new-secret
 ```
 
 **Note:** Inline environment variables override values from your `.env` file. You can override `DATABASE_URL` and `REDIS_URL` to connect the API to external database/cache services instead of the bundled ones.
@@ -339,18 +318,18 @@ Use the Nursery environment for demos, trials, or showcasing features:
 
 ```bash
 # First time setup - pulls images and starts with demo data
-crux nursery start
+crux-nursery nursery start
 
 # Access the API at http://localhost:3000
 
 # Stop (keeps data for next demo)
-crux nursery stop
+crux-nursery nursery stop
 
 # Restart for another demo
-crux nursery start
+crux-nursery nursery start
 
 # Get latest updates and fresh data
-crux nursery reset
+crux-nursery nursery reset
 ```
 
 ### Testing Latest Changes
@@ -359,13 +338,13 @@ Pull the latest published image and test:
 
 ```bash
 # Pull latest images
-crux nursery update
+crux-nursery nursery update
 
 # Restart with latest images
-crux nursery restart
+crux-nursery nursery restart
 
 # Or do a complete fresh reset
-crux nursery reset
+crux-nursery nursery reset
 ```
 
 ### Database Exploration
@@ -374,10 +353,10 @@ Connect to the database to explore the demo data:
 
 ```bash
 # Start the environment
-crux nursery start
+crux-nursery nursery start
 
 # Connect to PostgreSQL
-crux nursery db connect
+crux-nursery nursery db connect
 
 # In psql:
 # \dt - list tables
@@ -398,10 +377,10 @@ lsof -i :5432  # Nursery PostgreSQL
 lsof -i :6379  # Nursery Redis
 
 # Stop the Nursery
-crux nursery stop
+crux-nursery nursery stop
 
 # Or clean everything
-crux nursery clean
+crux-nursery nursery clean
 ```
 
 ### Containers won't start
@@ -409,8 +388,8 @@ crux nursery clean
 Try cleaning and restarting:
 
 ```bash
-crux nursery clean
-crux nursery start
+crux-nursery nursery clean
+crux-nursery nursery start
 ```
 
 ### Database connection issues
@@ -418,7 +397,7 @@ crux nursery start
 Make sure the database is healthy:
 
 ```bash
-crux nursery status
+crux-nursery nursery status
 ```
 
 You should see `Up (healthy)` for postgres.
@@ -428,11 +407,11 @@ You should see `Up (healthy)` for postgres.
 Pull the latest images and restart:
 
 ```bash
-crux nursery update
-crux nursery restart
+crux-nursery nursery update
+crux-nursery nursery restart
 
 # Or do a complete fresh reset
-crux nursery reset
+crux-nursery nursery reset
 ```
 
 ### Docker daemon not running
@@ -469,14 +448,6 @@ npm run docker:nursery:db:connect
 npm run docker:nursery:redis:connect
 npm run docker:nursery:api:connect
 ```
-
-## Future Features
-
-This CLI will eventually support:
-
-- **Cloud mode** - Login and interact with the official Crux Garden API at `api.crux.garden`
-- **Data operations** - Export, import, and sync data between environments
-- **Multi-instance management** - Switch between local and cloud instances
 
 ## API Development
 

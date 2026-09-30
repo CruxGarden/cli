@@ -1,10 +1,11 @@
 {
   "name": "@cruxgarden/cli",
   "version": "0.0.17",
-  "description": "Crux Garden CLI",
+  "description": "Crux Garden Nursery CLI for Docker environments",
   "type": "module",
   "bin": {
-    "crux": "./bin/crux.js"
+    "crux": "./bin/crux.js",
+    "crux-nursery": "./bin/crux.js"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
