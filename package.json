@@ -1,6 +1,6 @@
 {
   "name": "@cruxgarden/cli",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "description": "Crux Garden Nursery CLI for Docker environments",
   "type": "module",
   "bin": {
