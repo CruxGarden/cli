@@ -1,29 +1,30 @@
 {
   "name": "@cruxgarden/cli",
-  "version": "0.0.17",
-  "description": "Crux Garden CLI",
+  "version": "0.1.0",
+  "description": "Crux Garden Nursery CLI for Docker environments",
   "type": "module",
   "bin": {
-    "crux": "./bin/crux.js"
+    "crux": "./bin/crux.js",
+    "crux-nursery": "./bin/crux.js"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "format": "prettier --write .",
-    "docker:nursery": "cd docker && docker-compose -f docker-compose.nursery.yml up -d",
-    "docker:nursery:logs": "cd docker && docker-compose -f docker-compose.nursery.yml logs -f",
-    "docker:nursery:down": "cd docker && docker-compose -f docker-compose.nursery.yml down",
-    "docker:nursery:clean": "cd docker && docker-compose -f docker-compose.nursery.yml down -v",
-    "docker:nursery:pull": "cd docker && docker-compose -f docker-compose.nursery.yml pull",
-    "docker:nursery:reset": "cd docker && docker-compose -f docker-compose.nursery.yml down -v && docker-compose -f docker-compose.nursery.yml pull && docker-compose -f docker-compose.nursery.yml up -d",
-    "docker:nursery:db": "cd docker && docker-compose -f docker-compose.nursery.yml up -d postgres redis",
-    "docker:nursery:db:stop": "cd docker && docker-compose -f docker-compose.nursery.yml stop postgres redis",
+    "docker:nursery": "node bin/crux.js nursery start",
+    "docker:nursery:logs": "node bin/crux.js nursery logs -f",
+    "docker:nursery:down": "node bin/crux.js nursery stop",
+    "docker:nursery:clean": "node bin/crux.js nursery clean",
+    "docker:nursery:pull": "node bin/crux.js nursery pull",
+    "docker:nursery:reset": "node bin/crux.js nursery reset",
+    "docker:nursery:db": "node bin/crux.js nursery start --db-only",
+    "docker:nursery:db:stop": "node bin/crux.js nursery db stop",
     "docker:nursery:redis:connect": "docker exec -it cruxgarden-nursery-redis redis-cli",
     "docker:nursery:db:connect": "docker exec -it cruxgarden-nursery-postgres psql -U cruxgarden -d cruxgarden",
     "docker:nursery:api:connect": "docker exec -it cruxgarden-nursery-api sh",
     "publish:patch": "npm version patch && npm publish && git push && git push --tags",
     "publish:minor": "npm version minor && npm publish && git push && git push --tags",
     "publish:major": "npm version major && npm publish && git push && git push --tags",
-    "verify": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests"
+    "verify": "node --check bin/crux.js && node --check lib/commands.js && node --check lib/nursery.js && prettier --check lib/commands.js lib/nursery.js test docker/docker-compose.nursery.yml package.json && npm test -- --runInBand"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -31,7 +32,6 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
-    "figlet": "^1.9.3",
     "ora": "^7.0.1"
   },
   "devDependencies": {
